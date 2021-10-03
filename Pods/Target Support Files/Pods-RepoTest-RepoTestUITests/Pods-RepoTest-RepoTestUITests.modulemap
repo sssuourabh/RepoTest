@@ -1,0 +1,6 @@
+framework module Pods_RepoTest_RepoTestUITests {
+  umbrella header "Pods-RepoTest-RepoTestUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
