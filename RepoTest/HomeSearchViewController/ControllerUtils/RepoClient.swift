@@ -10,7 +10,7 @@ import Combine
 import UIKit
 
 protocol RepoClient {
-    func getRepos() -> AnyPublisher<Result<Repos, Error>, Never>
+    func getRepos(pageNumber: Int) -> AnyPublisher<Result<Repos, Error>, Never>
     func loadImage(for repo: Repo) -> AnyPublisher<UIImage?, Never>
 }
 
@@ -24,9 +24,9 @@ final class RepoClientImpl: RepoClient {
         self.imageLoaderService = imageLoaderService
     }
 
-    func getRepos() -> AnyPublisher<Result<Repos, Error>, Never> {
+    func getRepos(pageNumber: Int) -> AnyPublisher<Result<Repos, Error>, Never> {
         return networkService
-            .load(Resource<Repos>.repos(query: "RxSwift"))
+            .load(Resource<Repos>.repos(query: "swift", pageNumber: pageNumber))
             .map { .success($0) }
             .catch { error -> AnyPublisher<Result<Repos, Error>, Never> in .just(.failure(error)) }
             .receive(on: RunLoop.main)

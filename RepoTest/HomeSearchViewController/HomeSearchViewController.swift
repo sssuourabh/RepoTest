@@ -13,13 +13,20 @@ import Cartography
 
 class HomeSearchViewController: UIViewController {
     
+    struct State {
+        public var reposArray = [RepoViewModel]()
+        var pageNumber: Int = 1
+        var canLoadNextPage = true
+        var isLoading = false
+    }
+    
+    private var state: State
     public let dataclient: RepoClient
     // MARK: // Properties
     private var activityIndicator = UIActivityIndicatorView(style: .large)
     private let cellReuseIdentifier = "cell"
 
     // FIXME: - Whether it's advised to hold viewmodel object or not
-    private var reposArray = [RepoViewModel]()
     private lazy var dataSource = makeDataSource()
 
     private let tableView: UITableView = {
@@ -36,6 +43,7 @@ class HomeSearchViewController: UIViewController {
     // MARK: Initialization
     init(dataclient: RepoClient) {
         self.dataclient = dataclient
+        self.state = State()
         super.init(nibName: nil, bundle: nil)
         title = NSLocalizedString("Github Repos", comment: "Title string")
     }
@@ -64,15 +72,21 @@ class HomeSearchViewController: UIViewController {
                            forCellReuseIdentifier: cellReuseIdentifier)
         
         tableView.dataSource = dataSource
+        tableView.delegate = self
         
-        dataclient.getRepos()
+        getRepoData()
+    }
+    
+    private func getRepoData() {
+        guard state.canLoadNextPage else { return }
+        dataclient.getRepos(pageNumber: state.pageNumber)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 switch completion {
                 case .failure: break
                 case .finished:
-                    self.update(with: self.reposArray)
+                    self.update(with: self.state.reposArray)
                 }
             }, receiveValue: { result in
                 switch result {
@@ -80,10 +94,17 @@ class HomeSearchViewController: UIViewController {
                     print(error.localizedDescription)
                 case .success(let repositories):
                     let viewModels = self.viewModels(from: repositories.items)
-                    self.reposArray.append(contentsOf: viewModels)
+                    self.state.reposArray.append(contentsOf: viewModels)
+                    self.state.pageNumber += 1
+                    self.state.isLoading = false
+                    self.state.canLoadNextPage = viewModels.count == 10
                 }
             })
             .store(in: &cancellables)
+    }
+    
+    private func loadMoreIfNeeded() {
+        
     }
 }
 
@@ -103,7 +124,7 @@ fileprivate extension HomeSearchViewController {
                     for: indexPath
                 ) as! RepoCell
                 
-                let repoViewModel = self.reposArray[indexPath.row]
+                let repoViewModel = self.state.reposArray[indexPath.row]
                 cell.updateCell(from: repoViewModel)
                 return cell
             }
@@ -138,5 +159,15 @@ extension HomeSearchViewController: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Infinite scrolling.
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        
+        if (offsetY > contentHeight - tableView.frame.size.height && !state.isLoading) {
+            state.isLoading = true
+            getRepoData()
+        }
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("shjkdhkh dhd")
     }
 }

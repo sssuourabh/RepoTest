@@ -8,10 +8,12 @@
 import Foundation
 
 extension Resource {
-    static func repos(query: String, userId: String = "sssuourabh") -> Resource<Repos> {
+    static func repos(query: String, pageNumber: Int) -> Resource<Repos> {
         let url = APIConstants.baseUrl.appendingPathComponent("/search/repositories")
         let parameters: [String : CustomStringConvertible] = [
-            "q": query
+            "q": query,
+            "page": pageNumber,
+            "per_page": 10
         ]
         return Resource<Repos>(url: url, parameters: parameters)
     }
