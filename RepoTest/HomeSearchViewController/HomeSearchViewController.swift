@@ -29,7 +29,7 @@ class HomeSearchViewController: UIViewController {
     // FIXME: - Whether it's advised to hold viewmodel object or not
     private lazy var dataSource = makeDataSource()
 
-    private let tableView: UITableView = {
+	let tableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView(frame: .zero)
@@ -80,7 +80,6 @@ class HomeSearchViewController: UIViewController {
     private func getRepoData() {
         guard state.canLoadNextPage else { return }
         dataclient.getRepos(pageNumber: state.pageNumber)
-            .receive(on: RunLoop.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 switch completion {
@@ -88,17 +87,12 @@ class HomeSearchViewController: UIViewController {
                 case .finished:
                     self.update(with: self.state.reposArray)
                 }
-            }, receiveValue: { result in
-                switch result {
-                case .failure(let error):
-                    print(error.localizedDescription)
-                case .success(let repositories):
-                    let viewModels = self.viewModels(from: repositories.items)
-                    self.state.reposArray.append(contentsOf: viewModels)
-                    self.state.pageNumber += 1
-                    self.state.isLoading = false
-                    self.state.canLoadNextPage = viewModels.count == 10
-                }
+            }, receiveValue: { repositories in
+				let viewModels = self.viewModels(from: repositories.items)
+				self.state.reposArray.append(contentsOf: viewModels)
+				self.state.pageNumber += 1
+				self.state.isLoading = false
+				self.state.canLoadNextPage = viewModels.count == 10
             })
             .store(in: &cancellables)
     }
@@ -132,12 +126,10 @@ fileprivate extension HomeSearchViewController {
     }
     
     func update(with repoViewModel: [RepoViewModel], animate: Bool = true) {
-        DispatchQueue.main.async {
-            var snapshot = NSDiffableDataSourceSnapshot<Section, RepoViewModel>()
-            snapshot.appendSections(Section.allCases)
-            snapshot.appendItems(repoViewModel, toSection: .main)
-            self.dataSource.apply(snapshot, animatingDifferences: animate)
-        }
+		var snapshot = NSDiffableDataSourceSnapshot<Section, RepoViewModel>()
+		snapshot.appendSections(Section.allCases)
+		snapshot.appendItems(repoViewModel, toSection: .main)
+		self.dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
     private func viewModels(from repos: [Repo]) -> [RepoViewModel] {

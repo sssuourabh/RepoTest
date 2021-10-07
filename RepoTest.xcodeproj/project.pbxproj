@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08010CE7270F2A1700D70FAA /* HomeSearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08010CE6270F2A1700D70FAA /* HomeSearchViewControllerTests.swift */; };
 		632304BC27AF6F2B0ECCFC45 /* Pods_RepoTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2BD194141ABED652509F0A /* Pods_RepoTestTests.framework */; };
 		66177ACC7E9036E8D09D9BD5 /* Pods_RepoTest_RepoTestUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CBD40F2D15F5BA03F4667BA /* Pods_RepoTest_RepoTestUITests.framework */; };
 		6A34B5F02709CFCF00C57A1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B5EF2709CFCF00C57A1A /* AppDelegate.swift */; };
@@ -14,7 +15,6 @@
 		6A34B5F42709CFCF00C57A1A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B5F32709CFCF00C57A1A /* ViewController.swift */; };
 		6A34B5F92709CFD100C57A1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A34B5F82709CFD100C57A1A /* Assets.xcassets */; };
 		6A34B5FC2709CFD100C57A1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A34B5FA2709CFD100C57A1A /* LaunchScreen.storyboard */; };
-		6A34B6072709CFD100C57A1A /* RepoTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B6062709CFD100C57A1A /* RepoTestTests.swift */; };
 		6A34B6122709CFD100C57A1A /* RepoTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B6112709CFD100C57A1A /* RepoTestUITests.swift */; };
 		6A34B6222709D0A800C57A1A /* ImageLoaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B6212709D0A800C57A1A /* ImageLoaderService.swift */; };
 		6A34B6252709D0CB00C57A1A /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B6242709D0CB00C57A1A /* Repo.swift */; };
@@ -50,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		00722B78F35ED7FF7FA94E18 /* Pods-RepoTestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoTestTests.release.xcconfig"; path = "Target Support Files/Pods-RepoTestTests/Pods-RepoTestTests.release.xcconfig"; sourceTree = "<group>"; };
+		08010CE6270F2A1700D70FAA /* HomeSearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchViewControllerTests.swift; sourceTree = "<group>"; };
 		310F0B005B0D7FFDBFCC4D1C /* Pods-RepoTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoTest.debug.xcconfig"; path = "Target Support Files/Pods-RepoTest/Pods-RepoTest.debug.xcconfig"; sourceTree = "<group>"; };
 		4C0A42F960FE2573F75FBBA5 /* Pods-RepoTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoTestTests.debug.xcconfig"; path = "Target Support Files/Pods-RepoTestTests/Pods-RepoTestTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6292BC2FEC5146E1AC9977BA /* Pods-RepoTest-RepoTestUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoTest-RepoTestUITests.debug.xcconfig"; path = "Target Support Files/Pods-RepoTest-RepoTestUITests/Pods-RepoTest-RepoTestUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -61,7 +62,6 @@
 		6A34B5FB2709CFD100C57A1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A34B5FD2709CFD100C57A1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A34B6022709CFD100C57A1A /* RepoTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepoTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A34B6062709CFD100C57A1A /* RepoTestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoTestTests.swift; sourceTree = "<group>"; };
 		6A34B6082709CFD100C57A1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A34B60D2709CFD100C57A1A /* RepoTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepoTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A34B6112709CFD100C57A1A /* RepoTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoTestUITests.swift; sourceTree = "<group>"; };
@@ -170,8 +170,8 @@
 		6A34B6052709CFD100C57A1A /* RepoTestTests */ = {
 			isa = PBXGroup;
 			children = (
-				6A34B6062709CFD100C57A1A /* RepoTestTests.swift */,
 				6A34B6082709CFD100C57A1A /* Info.plist */,
+				08010CE6270F2A1700D70FAA /* HomeSearchViewControllerTests.swift */,
 			);
 			path = RepoTestTests;
 			sourceTree = "<group>";
@@ -348,6 +348,7 @@
 					};
 					6A34B6012709CFD100C57A1A = {
 						CreatedOnToolsVersion = 12.5.1;
+						LastSwiftMigration = 1300;
 						TestTargetID = 6A34B5EB2709CFCF00C57A1A;
 					};
 					6A34B60C2709CFD100C57A1A = {
@@ -532,7 +533,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A34B6072709CFD100C57A1A /* RepoTestTests.swift in Sources */,
+				08010CE7270F2A1700D70FAA /* HomeSearchViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,6 +734,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V225CX73MD;
 				INFOPLIST_FILE = RepoTestTests/Info.plist;
@@ -744,6 +746,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sourabh.RepoTestTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepoTest.app/RepoTest";
@@ -756,6 +759,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V225CX73MD;
 				INFOPLIST_FILE = RepoTestTests/Info.plist;
