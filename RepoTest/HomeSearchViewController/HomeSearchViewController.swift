@@ -102,10 +102,6 @@ class HomeSearchViewController: UIViewController {
             })
             .store(in: &cancellables)
     }
-    
-    private func loadMoreIfNeeded() {
-        
-    }
 }
 
 fileprivate extension HomeSearchViewController {
@@ -147,7 +143,6 @@ fileprivate extension HomeSearchViewController {
             })
         }
     }
-
 }
 
 extension HomeSearchViewController: UITableViewDelegate {
