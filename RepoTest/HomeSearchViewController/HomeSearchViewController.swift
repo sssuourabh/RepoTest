@@ -32,7 +32,7 @@ class HomeSearchViewController: UIViewController {
 	let tableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.tableFooterView = UIView(frame: .zero)
+        //tableView.tableFooterView = UIView(frame: .zero)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .tertiarySystemGroupedBackground
         return tableView
@@ -56,20 +56,15 @@ class HomeSearchViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .white
         view.addSubview(tableView)
-        view.addSubview(activityIndicator)
-        
-        Cartography.constrain(tableView, activityIndicator) {
+        Cartography.constrain(tableView) {
             $0.edges == $0.superview!.edges
-            $1.width == 100
-            $1.height == 100
-            $1.centerX == $1.superview!.centerX
-            $1.centerY == $1.superview!.centerY
         }
     }
     
     override func viewDidLoad() {
         tableView.register(RepoCell.self,
                            forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.tableFooterView = activityIndicator
         
         tableView.dataSource = dataSource
         tableView.delegate = self
@@ -78,10 +73,12 @@ class HomeSearchViewController: UIViewController {
     }
     
     private func getRepoData() {
+        activityIndicator.startAnimating()
         guard state.canLoadNextPage else { return }
         dataclient.getRepos(pageNumber: state.pageNumber)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
+                self.activityIndicator.stopAnimating()
                 switch completion {
                 case .failure: break
                 case .finished:
@@ -95,6 +92,10 @@ class HomeSearchViewController: UIViewController {
 				self.state.canLoadNextPage = viewModels.count == 10
             })
             .store(in: &cancellables)
+    }
+    
+    private func addIndicator() {
+        
     }
 }
 
@@ -148,7 +149,7 @@ extension HomeSearchViewController: UITableViewDelegate {
         // Infinite scrolling.
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
-        
+
         if (offsetY > contentHeight - tableView.frame.size.height && !state.isLoading) {
             state.isLoading = true
             getRepoData()
