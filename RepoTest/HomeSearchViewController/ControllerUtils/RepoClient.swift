@@ -26,7 +26,7 @@ final class RepoClientImpl: RepoClient {
 
     func getRepos(pageNumber: Int) -> AnyPublisher<Repos, Error> {
         return networkService
-            .load(Resource<Repos>.repos(query: "swift", pageNumber: pageNumber))
+            .load(Resource<Repos>.repos(query: pageNumber % 2 == 0 ? "apple" : "swift", pageNumber: pageNumber))
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }

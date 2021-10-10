@@ -28,6 +28,7 @@
 		6A34B63A2709D1D600C57A1A /* RepoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B6372709D1D600C57A1A /* RepoClient.swift */; };
 		6A34B63D2709D20000C57A1A /* Publisher+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B63C2709D20000C57A1A /* Publisher+Utils.swift */; };
 		6A34B6402709D23900C57A1A /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A34B63F2709D23900C57A1A /* APIConstants.swift */; };
+		6AE3CC712711EE87006A77DA /* HomeSearchViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE3CC702711EE87006A77DA /* HomeSearchViewController2.swift */; };
 		841A804060B53F52B8ABC0B5 /* Pods_RepoTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E855DE35338357B28E177174 /* Pods_RepoTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		6A34B6372709D1D600C57A1A /* RepoClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoClient.swift; sourceTree = "<group>"; };
 		6A34B63C2709D20000C57A1A /* Publisher+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Utils.swift"; sourceTree = "<group>"; };
 		6A34B63F2709D23900C57A1A /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		6AE3CC702711EE87006A77DA /* HomeSearchViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchViewController2.swift; sourceTree = "<group>"; };
 		6F2BD194141ABED652509F0A /* Pods_RepoTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RepoTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CBD40F2D15F5BA03F4667BA /* Pods_RepoTest_RepoTestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RepoTest_RepoTestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7F43D8748DC9B600DD9E1AF /* Pods-RepoTest-RepoTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoTest-RepoTestUITests.release.xcconfig"; path = "Target Support Files/Pods-RepoTest-RepoTestUITests/Pods-RepoTest-RepoTestUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				6A34B6332709D1D600C57A1A /* HomeSearchViewController.swift */,
+				6AE3CC702711EE87006A77DA /* HomeSearchViewController2.swift */,
 				6A34B6342709D1D600C57A1A /* ViewComponent */,
 				6A34B6362709D1D600C57A1A /* ControllerUtils */,
 			);
@@ -521,6 +524,7 @@
 				6A34B63A2709D1D600C57A1A /* RepoClient.swift in Sources */,
 				6A34B62A2709D14700C57A1A /* Resource+Repo.swift in Sources */,
 				6A34B6382709D1D600C57A1A /* HomeSearchViewController.swift in Sources */,
+				6AE3CC712711EE87006A77DA /* HomeSearchViewController2.swift in Sources */,
 				6A34B6252709D0CB00C57A1A /* Repo.swift in Sources */,
 				6A34B6402709D23900C57A1A /* APIConstants.swift in Sources */,
 				6A34B6222709D0A800C57A1A /* ImageLoaderService.swift in Sources */,

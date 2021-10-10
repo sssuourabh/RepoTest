@@ -1,9 +1,10 @@
 //
-//  HomeSearchViewController.swift
-//  YouGovTest
+//  HomeSearchViewController2.swift
+//  RepoTest
 //
-//  Created by Sourabh Singh on 20/09/21.
+//  Created by Sourabh Singh on 09/10/21.
 //
+// Adding infinite scrollwith prefetch api's
 
 import Foundation
 import UIKit
@@ -11,7 +12,7 @@ import Combine
 import Carbon
 import Cartography
 
-class HomeSearchViewController: UIViewController {
+class HomeSearchViewController2: UIViewController {
     
     struct State {
         public var reposArray = [RepoViewModel]()
@@ -25,12 +26,12 @@ class HomeSearchViewController: UIViewController {
     // MARK: // Properties
     private var activityIndicator = UIActivityIndicatorView(style: .large)
     private let cellReuseIdentifier = "cell"
+    private let refreshControl = UIRefreshControl()
 
     // FIXME: - Whether it's advised to hold viewmodel object or not
     private lazy var dataSource = makeDataSource()
-    private let refreshControl = UIRefreshControl()
-    
-	let tableView: UITableView = {
+
+    let tableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = UITableView.automaticDimension
         //tableView.tableFooterView = UIView(frame: .zero)
@@ -47,7 +48,7 @@ class HomeSearchViewController: UIViewController {
         self.state = State()
         super.init(nibName: nil, bundle: nil)
         title = NSLocalizedString("Github Repos", comment: "Title string")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(updateStateAndFetchData))
 
     }
     
@@ -59,10 +60,10 @@ class HomeSearchViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .white
         view.addSubview(tableView)
-//        refreshControl.addTarget(Any?, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
         Cartography.constrain(tableView) {
             $0.edges == $0.superview!.edges
         }
+        tableView.addSubview(refreshControl)
     }
     
     override func viewDidLoad() {
@@ -71,7 +72,10 @@ class HomeSearchViewController: UIViewController {
         tableView.tableFooterView = activityIndicator
         
         tableView.dataSource = dataSource
+//        tableView.prefetchDataSource = self
         tableView.delegate = self
+        
+        refreshControl.addTarget(self, action: #selector(updateStateAndFetchData), for: .valueChanged)
         
         getRepoData()
     }
@@ -89,21 +93,40 @@ class HomeSearchViewController: UIViewController {
                     self.update(with: self.state.reposArray)
                 }
             }, receiveValue: { repositories in
-				let viewModels = self.viewModels(from: repositories.items)
-				self.state.reposArray.append(contentsOf: viewModels)
-				self.state.pageNumber += 1
-				self.state.isLoading = false
-				self.state.canLoadNextPage = viewModels.count == 10
+                if self.refreshControl.isRefreshing {
+                    self.state.reposArray.removeAll()
+                    self.refreshControl.endRefreshing()
+                }
+                let viewModels = self.viewModels(from: repositories.items)
+                self.state.reposArray.append(contentsOf: viewModels)
+                self.state.pageNumber += 1
+                self.state.isLoading = false
+                self.state.canLoadNextPage = viewModels.count == 10
             })
             .store(in: &cancellables)
     }
     
-    @objc private func refreshTapped() {
-        
+    @objc private func updateStateAndFetchData() {
+        //scroll to top
+        scrollToFirstRow()
+        // update state to initial value
+        refreshControl.beginRefreshing()
+        state.pageNumber = 1
+        state.canLoadNextPage = true
+        state.isLoading = false
+        // fetch data
+        getRepoData()
     }
+    
+    private func scrollToFirstRow() {
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
+      }
 }
 
-fileprivate extension HomeSearchViewController {
+fileprivate extension HomeSearchViewController2 {
     enum Section: CaseIterable {
         case main
     }
@@ -127,10 +150,10 @@ fileprivate extension HomeSearchViewController {
     }
     
     func update(with repoViewModel: [RepoViewModel], animate: Bool = true) {
-		var snapshot = NSDiffableDataSourceSnapshot<Section, RepoViewModel>()
-		snapshot.appendSections(Section.allCases)
-		snapshot.appendItems(repoViewModel, toSection: .main)
-		self.dataSource.apply(snapshot, animatingDifferences: animate)
+        var snapshot = NSDiffableDataSourceSnapshot<Section, RepoViewModel>()
+        snapshot.appendSections(Section.allCases)
+        snapshot.appendItems(repoViewModel, toSection: .main)
+        self.dataSource.apply(snapshot, animatingDifferences: animate)
     }
     
     private func viewModels(from repos: [Repo]) -> [RepoViewModel] {
@@ -142,7 +165,7 @@ fileprivate extension HomeSearchViewController {
     }
 }
 
-extension HomeSearchViewController: UITableViewDelegate {
+extension HomeSearchViewController2: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let snapshot = dataSource.snapshot()
@@ -159,7 +182,27 @@ extension HomeSearchViewController: UITableViewDelegate {
             getRepoData()
         }
     }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         print("shjkdhkh dhd")
     }
+    
+    //Prefetch
+    
 }
+
+
+//extension HomeSearchViewController2: UITableViewDataSourcePrefetching {
+//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+//        print("Prefetch rows at: \(indexPaths)")
+//        let needsFetch = indexPaths.contains { $0.row >= self.state.reposArray.count }
+//        if needsFetch {
+//            getRepoData()
+//        }
+//    }
+//
+//    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+//
+//        }
+//
+//}
