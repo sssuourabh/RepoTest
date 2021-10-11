@@ -72,9 +72,7 @@ class RepoCell: UITableViewCell {
         watchersLabel.text = "Watchers = \(viewModel.watchers)"
         openIssuesCountLabel.text = "Open issues count = \(viewModel.openIssues)"
         anyCancellable = viewModel.avatarImage.sink { [unowned self] image in
-            DispatchQueue.main.async {
-                repoOwnerImage.image = image
-            }
+            repoOwnerImage.image = image
         }
     }
 

@@ -32,7 +32,23 @@ final class RepoClientImpl: RepoClient {
     }
 
     func loadImage(for repo: Repo) -> AnyPublisher<UIImage?, Never> {
-        return imageLoaderService.loadImage(from: URL(string: repo.owner.avatarUrl)!)
+        print("repo.owner.avatarUrl = \(repo.owner.avatarUrl)")
+        
+        return Deferred { return Just(repo.id)}
+            .flatMap({[unowned self] id -> AnyPublisher<UIImage?, Never> in
+//                guard let name = repo.name else { return .just(nil)}
+//                guard let urlString = repo.owner.avatarUrl else { return .just(nil)}
+                guard let url = URL(string: repo.owner.avatarUrl) else { return .just(nil)}
+                return self.imageLoaderService.loadImage(from: url)
+            })
+            .subscribe(on: Scheduler.backgroundScheduler)
+            .receive(on: Scheduler.mainScheduler)
+            .eraseToAnyPublisher()
+        
+//        return imageLoaderService.loadImage(from: URL(string: repo.owner.avatarUrl)!)
+//            .subscribe(on: Scheduler.backgroundScheduler)
+//            .receive(on: Scheduler.mainScheduler)
+//            .eraseToAnyPublisher()
     }
 
 }
