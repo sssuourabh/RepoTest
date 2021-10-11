@@ -25,6 +25,8 @@ class HomeSearchViewController: UIViewController {
     // MARK: // Properties
     private var activityIndicator = UIActivityIndicatorView(style: .large)
     private let cellReuseIdentifier = "cell"
+    private var searchText = PassthroughSubject<String, Never>()
+    var subscription: Set<AnyCancellable> = []
 
     // FIXME: - Whether it's advised to hold viewmodel object or not
     private lazy var dataSource = makeDataSource()
@@ -75,7 +77,26 @@ class HomeSearchViewController: UIViewController {
         tableView.dataSource = dataSource
         tableView.delegate = self
         
-        getRepoData()
+        searchText.send("swift")
+//        getRepoData()
+    }
+    
+    func addSearchText() {
+        searchText
+            .debounce(for: .milliseconds(800), scheduler: Scheduler.mainScheduler)
+            .removeDuplicates()
+            .map( { string -> String? in
+                if string.isEmpty {
+                    //update array tp black
+                    return nil
+                }
+                return string
+            })
+            .compactMap { $0}
+            .sink { [weak self] string in
+                // search with string
+                self?.getRepoData()
+            }.store(in: &subscription)
     }
     
     private func setupAutoLayout() {
@@ -173,3 +194,27 @@ extension HomeSearchViewController: UITableViewDelegate {
         print("shjkdhkh dhd")
     }
 }
+
+
+/*
+ func scrollViewDidScroll(_ scrollView: UIScrollView) {
+     if scrollView == feedTableView {
+         let contentOffset = scrollView.contentOffset.y
+         print("contentOffset: ", contentOffset)
+         if (contentOffset > self.lastKnowContentOfsset) {
+             print("scrolling Down")
+             print("dragging Up")
+         } else {
+             print("scrolling Up")
+             print("dragging Down")
+         }
+     }
+ }
+
+ func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+     if scrollView == feedTableView {
+         self.lastKnowContentOfsset = scrollView.contentOffset.y
+         print("lastKnowContentOfsset: ", scrollView.contentOffset.y)
+     }
+ }
+ */
