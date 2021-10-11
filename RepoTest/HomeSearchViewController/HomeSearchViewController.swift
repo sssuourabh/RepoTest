@@ -60,9 +60,11 @@ class HomeSearchViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(tableView)
 //        refreshControl.addTarget(Any?, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
-        Cartography.constrain(tableView) {
-            $0.edges == $0.superview!.edges
-        }
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        setupAutoLayout()
+//        Cartography.constrain(tableView) {
+//            $0.edges == $0.superview!.edges
+//        }
     }
     
     override func viewDidLoad() {
@@ -74,6 +76,14 @@ class HomeSearchViewController: UIViewController {
         tableView.delegate = self
         
         getRepoData()
+    }
+    
+    private func setupAutoLayout() {
+        
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     private func getRepoData() {
